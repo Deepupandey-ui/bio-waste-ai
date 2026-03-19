@@ -1,0 +1,140 @@
+/* 🌌 Background */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #0f172a, #020617);
+    color: white;
+    text-align: center;
+}
+
+/* 📦 Container */
+.container {
+    margin-top: 50px;
+}
+
+/* 🧠 Heading */
+h1 {
+    margin-bottom: 30px;
+    font-size: 32px;
+}
+
+/* 📤 Upload Card */
+.card {
+    background: rgba(255,255,255,0.08);
+    padding: 20px;
+    border-radius: 15px;
+    display: inline-block;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 25px rgba(0,0,0,0.4);
+}
+
+/* 🔘 Button */
+button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px #22c55e;
+}
+
+/* 🖼 Image */
+#preview {
+    display: block;
+    margin: 20px auto;
+    max-width: 220px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+}
+
+/* 📊 Result Card */
+.result-card {
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 15px;
+    background: #1e293b;
+    box-shadow: 0 0 25px rgba(0,0,0,0.5);
+    text-align: left;
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.result-card:hover {
+    transform: scale(1.02);
+}
+
+/* 📊 Result Text */
+.result-card h2 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.result-card p {
+    margin: 8px 0;
+    font-size: 16px;
+}
+
+/* 💰 Profit Highlight */
+.profit {
+    color: #22c55e;
+    font-weight: bold;
+}
+
+/* 📈 Progress Bar */
+.progress-bar {
+    width: 100%;
+    background: #334155;
+    border-radius: 10px;
+    margin: 15px 0;
+    overflow: hidden;
+}
+
+.progress {
+    height: 12px;
+    background: linear-gradient(90deg, #22c55e, #4ade80);
+    border-radius: 10px;
+    box-shadow: 0 0 10px #22c55e;
+    transition: width 0.5s ease;
+}
+
+/* 📍 Buyers Card */
+.buyer-card {
+    background: #1e293b;
+    padding: 15px;
+    border-radius: 12px;
+    margin-top: 15px;
+    text-align: left;
+}
+
+.buyer-card h3 {
+    margin-bottom: 10px;
+}
+
+.buyer-card li {
+    margin: 5px 0;
+}
+
+/* 🤖 Recommendation */
+.recommendation-card {
+    background: #0f172a;
+    border-left: 4px solid #22c55e;
+    padding: 12px;
+    margin-top: 15px;
+    border-radius: 8px;
+}
+
+/* ❌ Error */
+.error-card {
+    background: #7f1d1d;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
