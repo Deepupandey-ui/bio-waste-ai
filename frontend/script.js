@@ -35,7 +35,10 @@ async function analyze() {
     formData.append("file", file);
 
     // Loading UI
-    resultDiv.innerHTML = "⏳ Uploading & analyzing...";
+    resultDiv.innerHTML = `
+    <div class="loader"></div>
+    <p class="loading-text">Analyzing Waste...</p>
+`;
 
     try {
         const response = await fetch("http://127.0.0.1:8080/analyze-image", {
@@ -114,12 +117,13 @@ async function analyze() {
        `;
 
     } catch (error) {
-        console.error(error);
+    console.error(error);
 
-        resultDiv.innerHTML = `
-            <div class="error-card">
-                ❌ Failed to connect backend
-            </div>
-        `;
-    }
+    resultDiv.innerHTML = `
+        <div class="error-card">
+            <h3>⚠️ Connection Error</h3>
+            <p>Backend not reachable. Please check server.</p>
+        </div>
+    `;
+}
 }

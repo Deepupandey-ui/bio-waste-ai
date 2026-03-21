@@ -2,7 +2,7 @@ package com.biowaste.backend.controller;
 
 import java.util.HashMap;
 import java.util.Map;
-
+import java.util.Random;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,16 +15,21 @@ public class WasteController {
         return "Backend is working 🚀";
     }
 
-   @PostMapping("/analyze-image")
+@PostMapping("/analyze-image")
 public Map<String, String> analyzeImage(@RequestParam("file") MultipartFile file) {
 
-    Map<String, String> result = new HashMap<>();
+    Random rand = new Random();
 
-    result.put("waste", "30%");
-    result.put("use", "Compost");
-    result.put("products", "Organic Fertilizer");
-    result.put("profit", "₹80");
-    result.put("co2", "50kg");
+    int waste = rand.nextInt(80) + 20; 
+
+    String use = (waste > 50) ? "Biofuel" : "Compost";
+
+    Map<String, String> result = new HashMap<>();
+    result.put("waste", waste + "%");
+    result.put("use", use);
+    result.put("products", use.equals("Biofuel") ? "Ethanol, Biogas" : "Organic Fertilizer");
+    result.put("profit", "₹" + (waste * 2));
+    result.put("co2", (waste * 2) + "kg");
 
     return result;
 }

@@ -10,6 +10,9 @@ body {
 /* 📦 Container */
 .container {
     margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* 🧠 Heading */
@@ -26,6 +29,7 @@ h1 {
     display: inline-block;
     backdrop-filter: blur(10px);
     box-shadow: 0 0 25px rgba(0,0,0,0.4);
+    margin-bottom: 20px;
 }
 
 /* 🔘 Button */
@@ -57,7 +61,7 @@ button:hover {
 
 /* 📊 Result Card */
 .result-card {
-    margin-top: 30px;
+    margin-top: 20px;
     padding: 20px;
     border-radius: 15px;
     background: #1e293b;
@@ -65,6 +69,7 @@ button:hover {
     text-align: left;
     display: inline-block;
     transition: transform 0.3s ease;
+    max-width: 350px;
 }
 
 .result-card:hover {
@@ -78,8 +83,9 @@ button:hover {
 }
 
 .result-card p {
-    margin: 8px 0;
+    margin: 10px 0;
     font-size: 16px;
+    line-height: 1.5;
 }
 
 /* 💰 Profit Highlight */
@@ -112,6 +118,7 @@ button:hover {
     border-radius: 12px;
     margin-top: 15px;
     text-align: left;
+    max-width: 350px;
 }
 
 .buyer-card h3 {
@@ -129,6 +136,7 @@ button:hover {
     padding: 12px;
     margin-top: 15px;
     border-radius: 8px;
+    max-width: 350px;
 }
 
 /* ❌ Error */
@@ -137,4 +145,25 @@ button:hover {
     padding: 15px;
     border-radius: 10px;
     margin-top: 20px;
+    max-width: 350px;
+}
+
+/* 🔄 Loader */
+.loader {
+    border: 5px solid #334155;
+    border-top: 5px solid #22c55e;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+    margin-top: 10px;
 }
