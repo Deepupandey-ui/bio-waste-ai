@@ -53,17 +53,19 @@ async function analyze() {
         const data = await response.json();
 
         // 🎯 MAIN RESULT UI
-        resultDiv.innerHTML = `
-            <div class="result-card">
-                <h2>📊 Analysis Result</h2>
+       resultDiv.innerHTML = `
+    <div class="result-card">
+        <h2>📊 Analysis Result</h2>
 
-                <p><strong>Waste Level:</strong> ${data.waste}</p>
-                <p><strong>Best Use:</strong> ${data.use}</p>
-                <p><strong>Products:</strong> ${data.products}</p>
-                <p><strong>Profit:</strong> <span class="profit">${data.profit}</span></p>
-                <p><strong>CO₂ Saved:</strong> ${data.co2}</p>
-            </div>
-        `;
+        <p><strong>Waste Type:</strong> ${data.type}</p>   <!-- 🔥 YAHAN ADD -->
+
+        <p><strong>Waste Level:</strong> ${data.waste}</p>
+        <p><strong>Best Use:</strong> ${data.use}</p>
+        <p><strong>Products:</strong> ${data.products}</p>
+        <p><strong>Profit:</strong> ${data.profit}</p>
+        <p><strong>CO₂ Saved:</strong> ${data.co2}</p>
+    </div>
+`;
 
         // 📊 Progress Bar
         const wastePercent = parseInt(data.waste);
