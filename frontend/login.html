@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - BioWaste AI</title>
+    <link rel="stylesheet" href="style.css?v=12">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <style>
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            gap: 12px;
+        }
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #ddd;
+        }
+        .divider span {
+            color: #999;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        .google-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #444;
+            transition: all 0.3s ease;
+        }
+        .google-btn:hover {
+            border-color: #4285f4;
+            box-shadow: 0 4px 15px rgba(66, 133, 244, 0.2);
+            transform: translateY(-1px);
+        }
+        .google-btn img {
+            width: 22px;
+            height: 22px;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar">
+    <div class="nav-brand" style="cursor:pointer;" onclick="location.href='index.html'">🌱 BioWaste AI</div>
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="login.html" class="active">Login</a>
+        <a href="signup.html" class="btn-outline">Sign Up</a>
+    </div>
+</nav>
+
+<div class="app-wrapper auth-wrapper">
+    <div class="card auth-card glass-panel">
+        <h2 style="text-align: center; color: var(--dark-green); margin-top: 0;">Login</h2>
+        <div id="authMessage"></div>
+
+        <!-- Google Sign-In Button -->
+        <button class="google-btn" onclick="googleLogin()">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+            Sign in with Google
+        </button>
+
+        <div class="divider"><span>or</span></div>
+
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit" class="btn-primary" style="margin-top: 20px;">Login</button>
+        </form>
+        <p style="text-align: center; margin-top: 15px;">Don't have an account? <a href="signup.html" style="color: var(--dark-green); font-weight: bold; text-decoration: none;">Sign Up</a></p>
+        <p style="text-align: center; margin-top: 8px;"><a href="forgot-password.html" style="color: var(--text-secondary); font-size: 0.9rem; text-decoration: none;">🔑 Forgot Password?</a></p>
+    </div>
+</div>
+
+<script>
+const GOOGLE_CLIENT_ID = "872276893176-49e7ikbt0qcl33e9cirv0tja1n3dinio.apps.googleusercontent.com";
+
+// ── Normal login ──────────────────────────────────────────────────────────────
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const u = document.getElementById('username').value;
+    const p = document.getElementById('password').value;
+    const msg = document.getElementById('authMessage');
+
+    const btn = e.target.querySelector('button');
+    const originalText = btn.innerText;
+    btn.innerText = "Processing...";
+    btn.disabled = true;
+
+    try {
+        const res = await fetch("http://127.0.0.1:8080/api/auth/login", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({username: u, password: p})
+        });
+        const data = await res.json();
+        if(res.ok) {
+            localStorage.setItem('username', data.username || u);
+            msg.innerHTML = `<p style="color: var(--dark-green); background: var(--light-green); padding: 10px; border-radius: 8px; text-align: center;">${data.message}</p>`;
+            setTimeout(() => window.location.href = "index.html", 1000);
+        } else {
+            msg.innerHTML = `<p style="color: #e74c3c; background: rgba(253, 236, 234, 0.9); padding: 10px; border-radius: 8px; text-align: center;">${data.message}</p>`;
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    } catch(err) {
+        msg.innerHTML = `<p style="color: #e74c3c; background: rgba(253, 236, 234, 0.9); padding: 10px; border-radius: 8px; text-align: center;">Backend server error</p>`;
+        btn.innerText = originalText;
+        btn.disabled = false;
+    }
+});
+
+// ── Google Sign-In ────────────────────────────────────────────────────────────
+function googleLogin() {
+    const client = google.accounts.oauth2.initTokenClient({
+        client_id: GOOGLE_CLIENT_ID,
+        scope: 'openid email profile',
+        callback: handleGoogleToken,
+    });
+    client.requestAccessToken();
+}
+
+async function handleGoogleToken(tokenResponse) {
+    const msg = document.getElementById('authMessage');
+
+    if (tokenResponse.error) {
+        msg.innerHTML = `<p style="color: #e74c3c; background: rgba(253, 236, 234, 0.9); padding: 10px; border-radius: 8px; text-align: center;">Google sign-in cancelled</p>`;
+        return;
+    }
+
+    msg.innerHTML = `<p style="color: var(--dark-green); background: var(--light-green); padding: 10px; border-radius: 8px; text-align: center;">🔄 Authenticating with Google...</p>`;
+
+    try {
+        // Get user info from Google
+        const userInfoRes = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+            headers: { Authorization: `Bearer ${tokenResponse.access_token}` }
+        });
+        const userInfo = await userInfoRes.json();
+
+        // Get ID token by using the access token to get it from Google
+        // For our backend, we'll send the user info directly
+        const res = await fetch("http://127.0.0.1:8080/api/auth/google-direct", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                email: userInfo.email,
+                name: userInfo.name,
+                picture: userInfo.picture,
+                accessToken: tokenResponse.access_token
+            })
+        });
+        const data = await res.json();
+        if (res.ok) {
+            localStorage.setItem('username', data.username);
+            msg.innerHTML = `<p style="color: var(--dark-green); background: var(--light-green); padding: 10px; border-radius: 8px; text-align: center;">✅ ${data.message}</p>`;
+            setTimeout(() => window.location.href = "index.html", 1000);
+        } else {
+            msg.innerHTML = `<p style="color: #e74c3c; background: rgba(253, 236, 234, 0.9); padding: 10px; border-radius: 8px; text-align: center;">${data.message}</p>`;
+        }
+    } catch (err) {
+        msg.innerHTML = `<p style="color: #e74c3c; background: rgba(253, 236, 234, 0.9); padding: 10px; border-radius: 8px; text-align: center;">Google sign-in failed. Try again.</p>`;
+    }
+}
+</script>
+</body>
+</html>
