@@ -1,25 +1,157 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BioWaste AI</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=12">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
+
 <body>
 
-<div class="container">
+    <nav class="navbar">
+        <div class="nav-brand" style="cursor:pointer;" onclick="location.href='index.html'">🌱 BioWaste AI</div>
+        <div class="nav-links" id="navLinks">
+            <!-- Injected via script.js -->
+        </div>
+    </nav>
 
-    <h1>🌱 BioWaste Intelligence</h1>
+    <div class="app-wrapper">
+        <header class="header"
+            style="border-bottom: 4px solid var(--primary-green); overflow: hidden; position: relative;">
+            <!-- Backgrounds -->
+            <div
+                style="position: absolute; top:0; left:0; right:0; bottom:0; z-index: 1; background: url('https://images.unsplash.com/photo-1473448912268-2022ce9509d8?q=50&w=1280&auto=format&fit=crop') center/cover;">
+            </div>
+            <div
+                style="position: absolute; top:0; left:0; right:0; bottom:0; z-index: 2; background: linear-gradient(rgba(255, 255, 255, 0.40), rgba(255, 255, 255, 0.65));">
+            </div>
 
-    <div class="card">
-        <input type="file" id="imageInput">
-        <button onclick="analyze()">Analyze Waste</button>
+            <div class="hero-container">
+
+                <!-- Left Logo -->
+                <img src="images/swach.jpg" class="side-img left-img" alt="Swachh Bharat">
+
+                <!-- Center Content -->
+                <div class="hero-text">
+                    <h2 id="welcomeText">Hii, nikhil! 👋</h2>
+
+                    <h1>Welcome to BioWaste Intelligence</h1>
+
+                    <p>
+                        AI-Powered Sustainable Waste Management & Real-time Verified Buyer Mapping
+                    </p>
+                </div>
+
+                <!-- Right Image -->
+                <img src="images/modi.jpg" class="side-img right-img" alt="PM Modi">
+
+            </div>
+        </header>
+
+        <main class="main-content">
+            <!-- Left Column: Upload & Tips -->
+            <section class="upload-section">
+                <div class="card glass-panel" id="uploadCard">
+                    <!-- Managed securely by script.js -->
+                </div>
+
+                <div class="image-preview-container">
+                    <img id="preview" style="display:none;" />
+                </div>
+
+                <!-- Extra Space Utilized -->
+                <div class="card tips-widget glass-panel" style="margin-top: 30px;">
+                    <h3 style="color: var(--dark-green); margin-top: 0;">💡 Swachh Bharat Tips</h3>
+                    <ul style="padding-left: 20px; color: var(--text-secondary); line-height: 1.6;">
+                        <li>Separate solid and wet waste structurally at the source.</li>
+                        <li>Scientific local composting reduces greenhouse gases.</li>
+                        <li>Agricultural bio-waste is fueling India's green electricity revolution!</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Right Column: Results & Map -->
+            <section class="results-section" id="result-container">
+                <div id="result">
+                    <div class="empty-state glass-panel">
+                        <h3 style="color: var(--dark-green);">Dashboard Ready!</h3>
+                        <p>Log in and upload a waste image to see the AI analysis, efficiency levels, nearest verified
+                            facilities, and environmental impact.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
     </div>
-      <img id="preview" style="max-width:200px; margin-top:20px; display:none;">
-    <div id="result" class="result-card"></div>
 
-</div>
+    <!-- Profile Modal -->
+    <div id="profileModal" class="modal">
+        <div class="modal-content glass-panel" style="margin: 5% auto; overflow-y: auto; max-height: 90vh;">
+            <span class="close" onclick="closeProfile()">&times;</span>
+            <h2 style="color: var(--dark-green); margin-top: 0;">👤 Your Profile</h2>
 
-<script src="script.js"></script>
+            <div style="text-align: center;">
+                <img id="profilePicPreview" src="https://via.placeholder.com/100"
+                    style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary-green); margin-bottom: 10px;">
+                <br>
+                <input type="file" id="profilePicInput" accept="image/*"
+                    style="font-size: 0.8rem; margin-bottom: 15px; display: none;">
+            </div>
 
+            <!-- View Mode -->
+            <div id="profileViewMode" style="text-align: center; margin-bottom: 20px;">
+                <h3 id="displayFullName" style="margin-bottom: 5px;"></h3>
+                <p id="displayPhone" style="color: var(--text-secondary); margin-top: 0;"></p>
+                <button class="btn-primary" style="margin-top:15px; padding: 10px; border-radius: 8px;"
+                    onclick="toggleEditProfile()">✏️ Edit Profile</button>
+            </div>
+
+            <!-- Edit Mode Form -->
+            <form id="profileForm" style="display:none;">
+                <label style="font-weight: 600; color: var(--text-primary);">Full Name:</label>
+                <input type="text" id="profFullName" class="modal-input" placeholder="Enter Full Name">
+
+                <label style="font-weight: 600; color: var(--text-primary); display:block; margin-top: 10px;">Phone
+                    Number:</label>
+                <input type="text" id="profPhone" class="modal-input" placeholder="Enter Phone Number">
+
+                <div style="display:flex; justify-content: space-between; gap: 15px; margin-top: 20px;">
+                    <button type="button" class="btn-outline" onclick="toggleEditProfile()"
+                        style="padding: 10px; width: 45%; border-radius: 8px; color: #e74c3c; border: 2px solid #e74c3c; font-weight: bold; background: white;">Cancel</button>
+                    <button type="submit" class="btn-primary" style="padding: 10px; width: 45%; border-radius: 8px;">💾
+                        Save</button>
+                </div>
+                <p id="profileMessage" style="text-align: center; margin-top: 10px; font-weight: bold;"></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer / About Section -->
+    <footer class="footer glass-panel">
+        <div class="footer-content">
+            <div class="about-us">
+                <h3 style="color: var(--dark-green); margin-top: 0;">🌍 What We Do</h3>
+                <p>BioWaste AI leverages advanced visual Artificial Intelligence to detect organic waste and seamlessly
+                    connect users with real verified local composting and biofuel facilities in India to promote a green
+                    circular economy.</p>
+            </div>
+            <div class="contact-info">
+                <h3 style="color: var(--dark-green); margin-top: 0;">📞 Contact Us</h3>
+                <p>Email: contact@biowasteai.in</p>
+                <p>Phone: 1-800-BIOWASTE (Dummy)</p>
+                <p>Address: Green Energy Park, IT Corridor, New Delhi, 110001 (HQ)</p>
+            </div>
+        </div>
+        <div
+            style="text-align: center; font-size: 0.9rem; margin-top: 30px; color: var(--text-secondary); padding-top: 20px; border-top: 1px solid rgba(0,0,0,0.1);">
+            &copy; 2026 BioWaste Intelligence Platform. All rights reserved. Supported by the Swachh Bharat Mission.
+        </div>
+    </footer>
+
+    <script src="script.js?v=12" charset="UTF-8"></script>
 </body>
+
 </html>
