@@ -1,0 +1,65 @@
+# ===============================
+# 📦 Build files
+# ===============================
+target/
+build/
+out/
+
+# Maven wrapper
+.mvn/wrapper/maven-wrapper.jar
+
+# Ignore nested target/build but allow src ones
+!**/src/main/**/target/
+!**/src/test/**/target/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# ===============================
+# 🔐 Sensitive files (VERY IMPORTANT)
+# ===============================
+**/application.properties
+**/application.yml
+**/application-dev.properties
+**/application-prod.properties
+.env
+.env.*
+
+# ===============================
+# 🧾 Logs
+# ===============================
+*.log
+
+# ===============================
+# 🖥️ IDE files
+# ===============================
+
+# IntelliJ
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Eclipse / STS
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# VS Code
+.vscode/
+
+# ===============================
+# 🖥️ OS files
+# ===============================
+.DS_Store
+Thumbs.db
