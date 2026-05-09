@@ -14,6 +14,10 @@ Transforming waste into value using Artificial Intelligence, Sustainability Anal
 
 # 📸 Project Preview
 
+<img width="1865" height="876" alt="image" src="https://github.com/user-attachments/assets/dbfeb28f-96d0-4759-b8de-a5393c9852cc" />
+<img width="1887" height="850" alt="image" src="https://github.com/user-attachments/assets/a5fd15ad-3eec-4516-bd40-5d82d2c9c599" />
+
+
 ## 🏠 Home Dashboard
 
 * Clean sustainability-focused UI
